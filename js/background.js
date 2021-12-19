@@ -5,3 +5,4 @@ const img = document.createElement("img");
 img.src = `img/${chosenImage}`;
 
 document.body.appendChild(img);
+img.setAttribute('width', '70%');
