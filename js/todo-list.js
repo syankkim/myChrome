@@ -10,20 +10,26 @@ function saveToDos(){
     localStorage.setItem(TODOS_KEY, JSON.stringify(toDos));
 }
 
+// array.filter(doFilter) -->doFilter true? keep item : remove item
+// [1,2,3,4].filter(doFilter)
+// doFilter(item) { return item!==3} => new array [1,2,4]
 function deleteToDo(e){
     const li = e.target.parentElement;
     li.remove();
+    toDos = toDos.filter(toDo => toDo.id !== parseInt(li.id));
+    saveToDos();
 }
 
 function paintTooDo(newTodo){
     const li = document.createElement("li");
+    li.id = newTodo.id;
     const span = document.createElement("span");
+    span.innerText = newTodo.text;
     const button = document.createElement("button");
     button.innerText = "❌";
     button.addEventListener("click", deleteToDo);
     li.appendChild(span);
     li.appendChild(button);
-    span.innerText = newTodo;
     toDoList.appendChild(li);
 }
 
@@ -31,8 +37,12 @@ function handleToDoSubmit(e){
     e.preventDefault();
     const newTodo = toDoInput.value;
     toDoInput.value = "";
-    toDos.push(newTodo);
-    paintTooDo(newTodo);
+    const newTodoObj = {
+        text: newTodo,
+        id: Date.now(),
+    };
+    toDos.push(newTodoObj);
+    paintTooDo(newTodoObj);
     saveToDos();
 }
 
